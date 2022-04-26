@@ -15,14 +15,14 @@ public class DriveTeleop extends CommandBase {
   private DoubleSupplier leftInput, rightInput, steeringInput;
 
   private Filter leftFilter, rightFilter;
-  private boolean filterEnabled;
+  private boolean filtersEnabled;
 
-  public DriveTeleop(TankDrive dt, DoubleSupplier leftInput, DoubleSupplier rightInput, DoubleSupplier steeringInput, boolean filterEnabled) {
+  public DriveTeleop(TankDrive dt, DoubleSupplier leftInput, DoubleSupplier rightInput, DoubleSupplier steeringInput, boolean filtersEnabled) {
     this.dt = dt;
     this.leftInput = leftInput;
     this.rightInput = rightInput;
     this.steeringInput = steeringInput;
-    this.filterEnabled = filterEnabled;
+    this.filtersEnabled = filtersEnabled;
 
     addRequirements(dt);
   }

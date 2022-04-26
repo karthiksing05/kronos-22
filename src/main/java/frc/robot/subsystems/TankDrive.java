@@ -5,27 +5,25 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.motor.TitanFXV2;
+import frc.robot.motor.TitanSRX;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.motor.Encoder;
 
 public class TankDrive extends SubsystemBase {
 
-  private final TitanFXV2 leftMotor;
-  private final TitanFXV2 rightMotor;
+  private final TitanSRX leftMotor;
+  private final TitanSRX rightMotor;
 
   public static final double MAX_SPEED = 1;
   public static final double DRIVETRAIN_INCHES_PER_PULSE = 18.85 / 2048f; // inches per pulse
 
-  public TankDrive(TitanFXV2 leftTalonFX, TitanFXV2 rightTalonFX) {
-    this.leftMotor = leftTalonFX;
-    this.rightMotor = rightTalonFX;
-    resetEncoders();
+  public TankDrive(TitanSRX leftTalonSRX, TitanSRX rightTalonSRX) {
+    this.leftMotor = leftTalonSRX;
+    this.rightMotor = rightTalonSRX;
 
-    leftTalonFX.configOpenloopRamp(1);
-    rightTalonFX.configOpenloopRamp(1);
+    leftTalonSRX.configOpenloopRamp(1);
+    rightTalonSRX.configOpenloopRamp(1);
   }
 
   @Override
@@ -33,24 +31,6 @@ public class TankDrive extends SubsystemBase {
 
     // Debugging the DriveTrain
     SmartDashboard.putBoolean("Drivetrain Running", isRunning());
-    SmartDashboard.putNumber("Left DT Encoder", getLeftEncoderPosition());
-    SmartDashboard.putNumber("Right DT Encoder", getRightEncoderPosition());
-
-  }
-
-  // Returns current wheel speeds
-  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
-    return new DifferentialDriveWheelSpeeds(leftMotor.getSensorCollection().getIntegratedSensorVelocity() * 10 * DRIVETRAIN_INCHES_PER_PULSE * 0.0254, -rightMotor.getSensorCollection().getIntegratedSensorVelocity() * 10 * DRIVETRAIN_INCHES_PER_PULSE * 0.0254);
-  }
-
-  // Get left encoder position
-  public double getLeftEncoderPosition() {
-    return getLeftMotor().getSensorCollection().getIntegratedSensorPosition();
-  }
-
-  // Get right encoder position
-  public double getRightEncoderPosition() {
-    return -getRightMotor().getSensorCollection().getIntegratedSensorPosition();
   }
 
   // Set wheel speeds individually
@@ -76,16 +56,11 @@ public class TankDrive extends SubsystemBase {
     rightMotor.coast();
   }
 
-  public void resetEncoders() {
-    this.leftMotor.getSensorCollection().setIntegratedSensorPosition(0, 0);
-    this.rightMotor.getSensorCollection().setIntegratedSensorPosition(0, 0);
-  }
-
-  public TitanFXV2 getLeftMotor() {
+  public TitanSRX getLeftMotor() {
     return leftMotor;
   }
 
-  public TitanFXV2 getRightMotor() {
+  public TitanSRX getRightMotor() {
     return rightMotor;
   }
 
@@ -95,10 +70,6 @@ public class TankDrive extends SubsystemBase {
 
   public Encoder getRightEncoder() {
     return rightMotor.getEncoder();
-  }
-
-  public double getAverageEncoderDistance() {
-    return (getLeftMotor().getSensorCollection().getIntegratedSensorPosition() + -getRightMotor().getSensorCollection().getIntegratedSensorPosition()) / 2.0;
   }
 
   public void enableBrownoutProtection() {

@@ -18,7 +18,6 @@ public class TitanSRX extends WPI_TalonSRX implements Motor {
 	private TitanSRX brownoutFollower = null;
 	private boolean brownout = false;
 
-	// todo deduplicate
 	private Filter percentOutputFilter;
 
 	/**

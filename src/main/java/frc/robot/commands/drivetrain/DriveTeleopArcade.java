@@ -43,7 +43,7 @@ public class DriveTeleopArcade extends CommandBase {
     double rpower =  throttle + steering;
     double lpower = throttle - steering;
 
-    dt.set(lpower, rpower);
+    this.dt.set(lpower, rpower);
 
   }
 

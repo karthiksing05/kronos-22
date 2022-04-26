@@ -134,7 +134,6 @@ public class TitanFX extends TalonFX implements Motor {
 				currentLimit, currentLimitThreshold, limitTimeout);
 		this.configSupplyCurrentLimit(currentLimitor);
 		this.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, currentLimit, currentLimitThreshold, limitTimeout));
-		// todo change above maybe idk
 
 	}
 
