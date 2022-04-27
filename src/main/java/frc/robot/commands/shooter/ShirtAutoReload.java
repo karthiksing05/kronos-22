@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.Shooter;
 
-public class ShootTShirt extends CommandBase {
+public class ShirtAutoReload extends CommandBase {
 
   private final Shooter shooter;
 
   private final TitanButton solenoidBtn;
   private final TitanButton rotateBtn;
 
-  public ShootTShirt(Shooter shooter, TitanButton solenoidBtn, TitanButton rotateBtn) {
+  public ShirtAutoReload(Shooter shooter, TitanButton solenoidBtn, TitanButton rotateBtn) {
 
     this.shooter = shooter;
 
@@ -38,12 +38,10 @@ public class ShootTShirt extends CommandBase {
       shooter.setBarrelSolenoid(true);
       // todo wait a predetermined delay?
       shooter.setBarrelSolenoid(false);
-    }
-    if (this.rotateBtn.isPressed()) {
-      // todo change color depending on whatever color the tape is and also change
       do {
         shooter.setRotateSpeed(0.3);
       }
+      // todo change color depending on whatever color the tape is and also change percentage
       while (!(shooter.getColor().red > 0.3));
       shooter.setRotateSpeed(0);
     }

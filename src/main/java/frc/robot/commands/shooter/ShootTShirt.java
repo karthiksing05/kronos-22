@@ -40,10 +40,11 @@ public class ShootTShirt extends CommandBase {
       shooter.setBarrelSolenoid(false);
     }
     if (this.rotateBtn.isPressed()) {
-      // todo change color depending on whatever color the tape is and also change
+
       do {
         shooter.setRotateSpeed(0.3);
       }
+      // todo change color depending on whatever color the tape is and also change percentage
       while (!(shooter.getColor().red > 0.3));
       shooter.setRotateSpeed(0);
     }

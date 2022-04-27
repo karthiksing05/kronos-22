@@ -12,7 +12,6 @@ import com.revrobotics.ColorSensorV3;
 import frc.robot.motor.TitanSRX;
 import edu.wpi.first.math.MathUtil;
 
-
 public class Shooter extends SubsystemBase {
 
   private final Compressor compressor;
