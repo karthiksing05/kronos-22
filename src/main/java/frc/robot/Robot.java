@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -15,9 +16,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+  private Command autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private RobotContainer robotContainer;
+
+  Timer timer = new Timer();
+  boolean pathScheduled = false;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -27,7 +31,17 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer();
+
+    robotContainer.drivetrain.brake();
+    robotContainer.leftMotor.configOpenloopRamp(0.5); // todo adjust these numbers?
+    robotContainer.rightMotor.configOpenloopRamp(0.5);
+    robotContainer.tiltMotor.configOpenloopRamp(0.5);
+    robotContainer.rotateMotor.configOpenloopRamp(0.5);
+
+    CommandScheduler.getInstance().setDefaultCommand(robotContainer.drivetrain, robotContainer.driveTeleopCommand);
+    CommandScheduler.getInstance().setDefaultCommand(robotContainer.shooter, robotContainer.shootTShirtCommand);
+
   }
 
   /**
@@ -43,30 +57,59 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+
     CommandScheduler.getInstance().run();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    robotContainer.drivetrain.brake();
+
+    robotContainer.leftMotor.configOpenloopRamp(0); // todo adjust these numbers?
+    robotContainer.rightMotor.configOpenloopRamp(0);
+    robotContainer.tiltMotor.configOpenloopRamp(0);
+    robotContainer.rotateMotor.configOpenloopRamp(0);
+
+  }
 
   @Override
   public void disabledPeriodic() {}
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  // @Override
-  // public void autonomousInit() {
-  //   m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+   @Override
+   public void autonomousInit() {
 
-  //   // schedule the autonomous command (example)
-  //   if (m_autonomousCommand != null) {
-  //     m_autonomousCommand.schedule();
-  //   }
-  // }
+     robotContainer.drivetrain.brake();
+     robotContainer.leftMotor.configOpenloopRamp(0.5); // todo adjust these numbers?
+     robotContainer.rightMotor.configOpenloopRamp(0.5);
+     robotContainer.tiltMotor.configOpenloopRamp(0.5);
+     robotContainer.rotateMotor.configOpenloopRamp(0.5);
+
+     timer.reset();
+     timer.start();
+
+     autonomousCommand = robotContainer.getAutonomousCommand();
+     pathScheduled = false;
+     autonomousCommand.schedule();
+
+   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+    if (timer.hasElapsed(0.1) && !pathScheduled){
+      autonomousCommand.schedule();
+      pathScheduled = true;
+    }
+
+    if (autonomousCommand.isFinished()) {
+      autonomousCommand.end(true);
+      disabledInit();
+    }
+
+  }
 
   @Override
   public void teleopInit() {
@@ -74,14 +117,14 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
     }
+    robotContainer.drivetrain.brake();
+    robotContainer.barrelSolenoid.set(false);
+
   }
 
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {

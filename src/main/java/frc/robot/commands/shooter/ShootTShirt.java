@@ -4,6 +4,7 @@
 
 package frc.robot.commands.shooter;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.Shooter;
@@ -12,14 +13,16 @@ public class ShootTShirt extends CommandBase {
 
   private final Shooter shooter;
 
-  private final TitanButton solenoidBtn;
+  private final TitanButton shootBtn;
   private final TitanButton rotateBtn;
 
-  public ShootTShirt(Shooter shooter, TitanButton solenoidBtn, TitanButton rotateBtn) {
+  private final Timer timer = new Timer();
+
+  public ShootTShirt(Shooter shooter, TitanButton shootBtn, TitanButton rotateBtn) {
 
     this.shooter = shooter;
 
-    this.solenoidBtn = solenoidBtn;
+    this.shootBtn = shootBtn;
     this.rotateBtn = rotateBtn;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -34,17 +37,22 @@ public class ShootTShirt extends CommandBase {
   @Override
   public void execute() {
 
-    if (this.solenoidBtn.isPressed()) {
-      shooter.setBarrelSolenoid(true);
-      // todo wait a predetermined delay?
+    if (this.shootBtn.isPressed()) {
+      timer.reset();
+      timer.start();
+      do {
+        shooter.setBarrelSolenoid(true);
+      }
+      while (!(timer.hasElapsed(0.5))); // TODO adjust number of seconds as needed
       shooter.setBarrelSolenoid(false);
     }
+
     if (this.rotateBtn.isPressed()) {
 
       do {
         shooter.setRotateSpeed(0.3);
       }
-      // todo change color depending on whatever color the tape is and also change percentage
+      // todo change color depending on whatever color the tape is and also change percentage of the color
       while (!(shooter.getColor().red > 0.3));
       shooter.setRotateSpeed(0);
     }

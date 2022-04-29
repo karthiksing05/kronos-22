@@ -6,10 +6,24 @@ package frc.robot;
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+import edu.wpi.first.wpilibj.I2C;
+
 public final class RobotMap {
 
-	// TODO Figure out what the appropriate CAN IDs for the motors are and put them here
-	// TODO also figure out what the Pneumatic IDs are and any other IDs
+	// TODO Figure out what the appropriate ids are for each mechanism on the robot
+
+	// CAN IDs
+	public static final int PNEUMATICS_HUB_ID = 15;
+	public static final int LEFT_SRX = 1;
+	public static final int RIGHT_SRX = 2;
+	public static final int ROTATE_SRX = 3;
+	public static final int TILT_SRX = 4;
+
+	// PCM IDs
+	public static final int BARREL_SOLENOID = 1;
+
+	// Sensor IDs
+	public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;;
 
 	// Joysticks
 	public static final int LEFT_JOYSTICK = 1;

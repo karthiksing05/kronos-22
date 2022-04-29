@@ -7,20 +7,22 @@ package frc.robot.commands.drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.motor.Filter;
 import frc.robot.subsystems.TankDrive;
+
 import java.util.function.DoubleSupplier;
 
-public class DriveTeleop extends CommandBase {
+public class DriveTeleopXbox extends CommandBase {
 
   private final TankDrive dt;
-  private DoubleSupplier leftInput, rightInput;
+  private DoubleSupplier leftInput, rightInput, steeringInput;
 
   private Filter leftFilter, rightFilter;
   private boolean filtersEnabled;
 
-  public DriveTeleop(TankDrive dt, DoubleSupplier leftInput, DoubleSupplier rightInput, boolean filtersEnabled) {
+  public DriveTeleopXbox(TankDrive dt, DoubleSupplier leftInput, DoubleSupplier rightInput, DoubleSupplier steeringInput, boolean filtersEnabled) {
     this.dt = dt;
     this.leftInput = leftInput;
     this.rightInput = rightInput;
+    this.steeringInput = steeringInput;
     this.filtersEnabled = filtersEnabled;
 
     addRequirements(dt);
@@ -37,7 +39,12 @@ public class DriveTeleop extends CommandBase {
   @Override
   public void execute() {
     double maxSpeed = dt.MAX_SPEED;
-    dt.set(leftInput.getAsDouble(), rightInput.getAsDouble());
+
+    double steering = steeringInput.getAsDouble();
+    double throttle = rightInput.getAsDouble() - leftInput.getAsDouble();
+    double rpower =  throttle + steering;
+    double lpower = throttle - steering;
+    dt.set(lpower, rpower);
 
   }
 

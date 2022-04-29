@@ -9,6 +9,12 @@ public class OI {
 
 	private static final double DEADBAND_PERCENTAGE = 0.1; // TODO Adjust this as necessary
 
+	// todo change these ids
+	public static final int ROTATE_BTN_ID = 1;
+	public static final int TILT_BTN_ID = 1;
+	public static final int BARREL_UP_BTN_ID = 1;
+	public static final int BARREL_DOWN_BTN_ID = 1;
+
 	public OI() {
 		initialize();
 	}

@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.Shooter;
 
-public class ShirtAutoReload extends CommandBase {
+public class ShirtAutoRotate extends CommandBase {
 
   private final Shooter shooter;
 
   private final TitanButton solenoidBtn;
   private final TitanButton rotateBtn;
 
-  public ShirtAutoReload(Shooter shooter, TitanButton solenoidBtn, TitanButton rotateBtn) {
+  public ShirtAutoRotate(Shooter shooter, TitanButton solenoidBtn, TitanButton rotateBtn) {
 
     this.shooter = shooter;
 

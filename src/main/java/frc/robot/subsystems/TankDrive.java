@@ -26,13 +26,6 @@ public class TankDrive extends SubsystemBase {
     rightTalonSRX.configOpenloopRamp(1);
   }
 
-  @Override
-  public void periodic(){
-
-    // Debugging the DriveTrain
-    SmartDashboard.putBoolean("Drivetrain Running", isRunning());
-  }
-
   // Set wheel speeds individually
   public void set(double leftTSpeed, double rightTSpeed) {
     leftTSpeed = MathUtil.clamp(leftTSpeed, -1, 1);
